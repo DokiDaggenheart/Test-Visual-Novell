@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19dd21e409203154ba848a26a031886d, type: 3}
+  m_Name: Noodles
+  m_EditorClassIdentifier: 
+  frontSprite: {fileID: -4029449406528043472, guid: f36e82087014de74da7c152957a3f25a, type: 3}
+  backSprite: {fileID: 4378659484658298722, guid: e753741e58d3b7845b39ae9b177a5b9b, type: 3}
+  id: 7

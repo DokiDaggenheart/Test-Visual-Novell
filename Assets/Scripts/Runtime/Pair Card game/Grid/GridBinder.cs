@@ -2,6 +2,7 @@ using Naninovel;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+
 public class GridBinder : MonoBehaviour
 {
     public bool isGameEnded;

@@ -1,36 +1,36 @@
-using Zenject;
 using Naninovel;
+using UnityEngine;
+using Zenject;
 
 [InitializeAtRuntime]
 public class CardGameService : IEngineService
 {
     private GridBinder _grid;
-    private readonly InputManager inputManager;
-    private readonly ScriptPlayer scriptPlayer;
+    private readonly CustomVariableManager _variableManager;
 
-    public CardGameService(InputManager inputManager, ScriptPlayer scriptPlayer)
+    public CardGameService(CustomVariableManager customVariableManager)
     {
-        this.inputManager = inputManager;
-        this.scriptPlayer = scriptPlayer;
+        _variableManager = customVariableManager;
+    }
+
+    public void Init(GridBinder grid)
+    {
+        _grid = grid;
     }
 
     public async UniTask InitializeServiceAsync()
     {
-        _grid = GridBinder.Instance;
+        await UniTask.WaitUntil(() => _grid != null);
+        Debug.Log("Initialization completed");
     }
 
-    public void ResetService()
-    {
+    public void ResetService() { }
 
-    }
-
-    public void DestroyService()
-    {
-
-    }
+    public void DestroyService() { }
 
     public async UniTask ExecuteGame()
     {
+        Debug.Log("Game Wants to execute");
         _grid.StartGame();
         await UniTask.WaitUntil(() => _grid.isGameEnded);
         _grid.gameObject.SetActive(false);

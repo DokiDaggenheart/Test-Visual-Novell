@@ -5,8 +5,7 @@ public class CardPooler : MonoBehaviour
 {
     [SerializeField] private CardView cardPrefab;
     [SerializeField] private int initialPoolSize = 12;
-    [SerializeField] private int expandBatchSize = 4; 
-
+    [SerializeField] private int expandBatchSize = 4;
     private readonly Queue<CardView> _cardPool = new();
 
     private void Awake()

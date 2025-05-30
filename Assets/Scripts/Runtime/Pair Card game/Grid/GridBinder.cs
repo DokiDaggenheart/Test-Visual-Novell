@@ -1,9 +1,9 @@
+using Naninovel;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 public class GridBinder : MonoBehaviour
 {
-    public static GridBinder Instance { get; private set; }
     public bool isGameEnded;
     [SerializeField] private int rows = 4;
     [SerializeField] private int columns = 3;
@@ -20,20 +20,12 @@ public class GridBinder : MonoBehaviour
         _cardSpawner = cardSpawner;
     }
 
-    private void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
-    }
-
     private void Start()
     {
         var gridModel = new GridModel(rows, columns, startPosition, offsetX, offsetY);
         _controller = new GridController(gridModel, cardsData, _cardSpawner);
         _controller.OnGameEnded += () => isGameEnded = true;
-        StartGame();
+        Engine.GetService<CardGameService>().Init(this);
     }
 
     public void StartGame()

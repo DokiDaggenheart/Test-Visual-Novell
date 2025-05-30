@@ -1,6 +1,5 @@
 using Naninovel;
 using UnityEngine;
-using Zenject;
 
 [InitializeAtRuntime]
 public class CardGameService : IEngineService

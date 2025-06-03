@@ -5,12 +5,6 @@ using UnityEngine;
 public class CardGameService : IEngineService
 {
     private GridBinder _grid;
-    private readonly CustomVariableManager _variableManager;
-
-    public CardGameService(CustomVariableManager customVariableManager)
-    {
-        _variableManager = customVariableManager;
-    }
 
     public void Init(GridBinder grid)
     {

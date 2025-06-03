@@ -149,3 +149,34 @@ MonoBehaviour:
     - name: StartScript
       pathPrefix: Scripts
       guid: 80f10e45ce5e6234392ebe06a530f230
+  - Id: Backgrounds/10953fd8-d22b-4ca4-8f10-bea51a5b8327
+    Resources:
+    - name: Futon
+      pathPrefix: Backgrounds/MainBackground
+      guid: 0fa8b568d68b7314db5dcfe53dae3843
+    - name: TrainNight
+      pathPrefix: Backgrounds/MainBackground
+      guid: 2d3f29d85eb724f4c9d15eaddbdb445f
+    - name: TrainDay
+      pathPrefix: Backgrounds/MainBackground
+      guid: 432bd542bc017294f84f6fe0166080e1
+    - name: Restaurant
+      pathPrefix: Backgrounds/MainBackground
+      guid: 22c7798290eb52d4693f3d7da0638652
+  - Id: Characters/85da213c-ccc7-46f5-acd8-7299251e663e
+    Resources:
+    - name: Main
+      pathPrefix: Characters/Mike
+      guid: 6b4740de90d806540aa336ff81248219
+  - Id: Characters/db5756be-0531-42a8-b009-27b5ee2c448a
+    Resources:
+    - name: Main
+      pathPrefix: Characters/Bruce
+      guid: 979152fc62f0e864b9d4618ba0a39f74
+  - Id: Characters/63d66328-c7c6-4a28-a433-e784f64e29c5
+    Resources:
+    - name: Main
+      pathPrefix: Characters/Chad
+      guid: a174ba4d27518374994a2394160a8afa
+  - Id: CharacterAvatars
+    Resources: []

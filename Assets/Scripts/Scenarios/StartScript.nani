@@ -1,2 +1,94 @@
-@cardGame
+@back Futon
+@char Mike pose:Up
+Mike: Привет! Как тебя зовут?
+@input name summary:"Как тебя зовут?"
 @stop
+Mike: Приятно познакомиться, {name}
+Mike: Слушай, мне очень нужна помощь кое в чем, можешь подсобить?
+@choice Да goto:StartScript.Accept
+@choice Нет goto:StartScript.Decline
+@stop
+
+# Accept
+Да, я могу помочь
+@addScore amount:5
+@goto StartScript.Second
+
+# Decline
+Нет, я помочь не смогу.
+@goto StartScript.Second
+
+# Second
+Mike: Ты в любом случае должен будешь мне помочь. Тебе нужно забрать у Чада нужные мне вещи.
+@goto StartScript.Train
+
+# Train
+@back TrainDay.RadialBlur
+@hideChars
+@char Bruce pose:Up
+Bruce: Куда едете, молодой человек?
+@spawn ShakeCharacter params:Bruce
+@shake Bruce count:5 time:0.5 power:1 ver:true
+Да так, по просьбе. 
+Bruce: Лучше будьте осторожнее.
+@choice Согласиться goto:StartScript.BeKind
+@choice Нагрубить goto:StartScript.BeRude
+@stop
+
+# BeRude
+Знаете, не ваше дело.
+Bruce: Ну, как знаете
+@hideChars
+@goto StartScript.Restaurant
+
+# BeKind
+Спасибо большое за заботу
+Bruce: всегда пожалуйста
+@addScore amount:5
+@hideChars
+@goto StartScript.Restaurant
+
+# Restaurant
+@back Restaurant
+@char Chad pose:Up
+Chad: ты здесь по просьбе Майка, да? Давай сыграем и тогда я дам тебе то что тебе нужно.
+Хорошо, сыграем!
+@hideChars
+@hidePrinter
+@cardGame
+@char Chad pose:Up
+Chad: Ну что, держи это, передашь Майку.
+@print "Я получил чемодан с вещами"
+@hideChars
+@goto StartScript.TrainNight
+
+# TrainNight
+@back TrainNight.RadialBlur
+@char Bruce pose:Up
+@checkScore
+@if hasEnoughScore="true"
+@goto StartScript.goodEnding
+@else
+@goto StartScript.badEnding
+
+# goodEnding
+Bruce: Надеюсь ты спокойно доберешься до дома. 
+@hideChars
+@back Futon pose:Up
+@char Mike pose:Up
+Mike: О! Ты вернул мои вещи, спасибо большое
+@wait 3
+@returnToMainMenu
+
+# badEnding
+Bruce: Знаешь, мне кажется что этот чемодан тебе ни к чему. 
+@hideChars
+@print "Мужчина насильно отобрал у меня чемодан и скрылся."
+@back Futon
+@char Mike pose:Up
+Mike: И где мой чемодан?
+У меня отобрал его мужчина в поезде
+Mike: Ужасно! Даже легчайшую работу не можешь сделать!
+@wait 3
+
+@returnToMainMenu

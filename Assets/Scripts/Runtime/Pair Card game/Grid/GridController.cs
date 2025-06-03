@@ -13,6 +13,8 @@ public class GridController
     private List<ICard> FlippedCards = new List<ICard>();
     private ICardSpawner _cardSpawner;
 
+    private Dictionary<ICard, Action> _cardClickHandlers = new();
+
     [Inject]
     public GridController(GridModel model, List<CardData> cardsData, ICardSpawner cardSpawner)
     {
@@ -37,7 +39,14 @@ public class GridController
 
     public void Init()
     {
+        foreach (var pair in _cardClickHandlers)
+        {
+            pair.Key.OnClicked -= pair.Value;
+        }
+
+        _cardClickHandlers.Clear();
         MatchedCards = new List<ICard>();
+
         GenerateGrid();
         OnGameEnded += _cardSpawner.DespawnCards;
     }
@@ -46,6 +55,7 @@ public class GridController
     {
         var cardsOnGrid = GenerateCardPairs(_gridModel.Rows * _gridModel.Columns);
         Shuffle(ref cardsOnGrid);
+
         for (int x = 0; x < _gridModel.Rows; x++)
         {
             for (int y = 0; y < _gridModel.Columns; y++)
@@ -54,7 +64,10 @@ public class GridController
                     .SpawnCard(new Vector3(_gridModel.StartPosition.x + x * _gridModel.OffsetX, _gridModel.StartPosition.y + y * _gridModel.OffsetY, 0), cardsOnGrid[x * _gridModel.Columns + y]);
 
                 _gridModel.SetCard(x, y, card);
-                card.OnClicked += () => OnCardClicked(card);
+
+                Action handler = () => OnCardClicked(card);
+                _cardClickHandlers[card] = handler;
+                card.OnClicked += handler;
             }
         }
     }
@@ -93,8 +106,8 @@ public class GridController
         }
         else
         {
-             FlippedCards[0].Flip();
-             FlippedCards[1].Flip();
+            FlippedCards[0].Flip();
+            FlippedCards[1].Flip();
         }
 
         FlippedCards.Clear();

@@ -23,14 +23,20 @@ public class GridBinder : MonoBehaviour
 
     private void Start()
     {
+        Engine.GetService<CardGameService>().Init(this);
         var gridModel = new GridModel(rows, columns, startPosition, offsetX, offsetY);
         _controller = new GridController(gridModel, cardsData, _cardSpawner);
         _controller.OnGameEnded += () => isGameEnded = true;
-        Engine.GetService<CardGameService>().Init(this);
+    }
+
+    public void RestartGrid()
+    {
+        isGameEnded = false;
     }
 
     public void StartGame()
     {
+        RestartGrid();
         _controller.Init();
     }
 }

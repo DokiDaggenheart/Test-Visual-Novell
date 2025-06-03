@@ -16,6 +16,7 @@ public class CardController : MonoBehaviour, ICard
     {
         _view.Initialize(data);
         _model = new CardModel(data.id);
+        _view.UpdateView(false);
     }
 
     public void Match()

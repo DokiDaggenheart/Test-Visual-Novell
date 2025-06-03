@@ -14,16 +14,20 @@ public class CardGameService : IEngineService
     public async UniTask InitializeServiceAsync()
     {
         await UniTask.WaitUntil(() => _grid != null);
-        Debug.Log("Initialization completed");
     }
 
-    public void ResetService() { }
+    public void ResetService() 
+    {
 
-    public void DestroyService() { }
+    }
+
+    public void DestroyService() 
+    {
+        _grid = null;
+    }
 
     public async UniTask ExecuteGame()
     {
-        Debug.Log("Game Wants to execute");
         _grid.StartGame();
         await UniTask.WaitUntil(() => _grid.isGameEnded);
         _grid.gameObject.SetActive(false);

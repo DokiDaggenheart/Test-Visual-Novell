@@ -32,7 +32,7 @@ public class CardView : MonoBehaviour
         await FlipCard(newCardSprite, token);
     }
 
-    public UniTask FlipCard(Sprite sprite, CancellationToken token = default, float duration = 1f)
+    public UniTask FlipCard(Sprite sprite, CancellationToken token = default, float duration = 0.5f)
     {
         return RotateCardAsync(duration, sprite, token);
     }
@@ -40,28 +40,24 @@ public class CardView : MonoBehaviour
     private async UniTask RotateCardAsync(float duration, Sprite sprite, CancellationToken token)
     {
         _isFlipping = true;
-        float elapsed = 0f;
-        float startRotation = transform.eulerAngles.y;
-        float endRotation = startRotation + 180f;
-        bool isSpriteChanged = false;
+        Vector3 startScale = new Vector3(2f, 2f, 2f);
+        float halfDuration = duration / 2f;
+        await AnimateScaleX(startScale.x, 0f, halfDuration, token);
+        _spriteRenderer.sprite = sprite;
+        await AnimateScaleX(0f, startScale.x, halfDuration, token);
+        transform.localScale = startScale;
+        _isFlipping = false;
+    }
 
+    private async UniTask AnimateScaleX(float from, float to, float duration, CancellationToken token)
+    {
+        float elapsed = 0f;
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            float yRotation = Mathf.Lerp(startRotation, endRotation, elapsed / duration);
-
-            if (!isSpriteChanged && yRotation > startRotation + 90)
-            {
-                _spriteRenderer.sprite = sprite;
-                isSpriteChanged = true;
-            }
-
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, yRotation, transform.eulerAngles.z);
-
+            float scaleX = Mathf.Lerp(from, to, elapsed / duration);
+            transform.localScale = new Vector3(scaleX, 2f, 2f);
             await UniTask.Yield(PlayerLoopTiming.Update, token);
         }
-
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, endRotation, transform.eulerAngles.z);
-        _isFlipping = false;
     }
 }

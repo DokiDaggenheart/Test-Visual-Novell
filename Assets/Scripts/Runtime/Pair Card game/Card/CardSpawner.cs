@@ -29,5 +29,6 @@ public class CardSpawner : ICardSpawner
         {
             _cardPooler.ReturnCard(card);
         }
+        CardsOnBoard = new List<CardView>();
     }
 }

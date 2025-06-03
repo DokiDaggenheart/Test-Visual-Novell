@@ -1,64 +1,62 @@
-using UnityEngine;
 using Naninovel;
 using System;
+using UnityEngine;
 
+[InitializeAtRuntime]
 public class ScoreService : IEngineService
 {
-    private int score;
-    private ScoreUI scoreUI;
-
     public event Action<int> OnScoreChanged;
+    private int _score;
+    private ScoreUI _scoreUI;
+    private CustomVariableManager _variableManager;
 
-    public bool Initialized { get; private set; }
+    public ScoreService(CustomVariableManager variableManager)
+    {
+        _variableManager = variableManager;
+    }
 
     public async UniTask InitializeServiceAsync()
     {
-        var prefab = Resources.Load<ScoreUI>("ScoreUI");
-        if (prefab == null)
-        {
-            Debug.LogError("ScoreUI prefab not found in Resources folder.");
-            return;
-        }
+        _score = 0;
+    }
 
-        scoreUI = UnityEngine.Object.Instantiate(prefab);
-        UnityEngine.Object.DontDestroyOnLoad(scoreUI.gameObject);
-
+    public void Init(ScoreUI scoreUI)
+    {
+        _scoreUI = scoreUI;
         OnScoreChanged += scoreUI.UpdateScore;
-        OnScoreChanged?.Invoke(score);
-
-        Initialized = true;
-        await UniTask.CompletedTask;
+        OnScoreChanged?.Invoke(_score);
     }
 
     public void ResetService()
     {
-        score = 0;
-        OnScoreChanged?.Invoke(score);
+        _score = 0;
+        OnScoreChanged?.Invoke(_score);
     }
 
     public void DestroyService()
     {
-        if (scoreUI != null)
+        if (_scoreUI != null)
         {
-            OnScoreChanged -= scoreUI.UpdateScore;
-            UnityEngine.Object.Destroy(scoreUI.gameObject);
-            scoreUI = null;
+            OnScoreChanged -= _scoreUI.UpdateScore;
+            UnityEngine.Object.Destroy(_scoreUI.gameObject);
+            _scoreUI = null;
         }
-
-        Initialized = false;
     }
 
     public void Increase(int amount = 1)
     {
-        score += amount;
-        OnScoreChanged?.Invoke(score);
+        _score += amount;
+        OnScoreChanged?.Invoke(_score);
+        Debug.Log(_score);
     }
 
-    public void Decrease(int amount = 1)
+    public void CheckScore()
     {
-        score -= amount;
-        OnScoreChanged?.Invoke(score);
+        if (_score >= 10)
+            Engine.GetService<ICustomVariableManager>().SetVariableValue("hasEnoughScore", "true");
+        else
+            Engine.GetService<ICustomVariableManager>().SetVariableValue("hasEnoughScore", "false");
     }
 
-    public int GetCurrentScore() => score;
+    public int GetCurrentScore() => _score;
 }
